@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap');
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -35,19 +37,12 @@
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -97,10 +92,11 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Roboto Slab', serif;
   }
 }
 
-/* Анимации */
+/* Базовые анимации */
 @keyframes moveLeftSlow {
   0% { transform: translateX(0); }
   100% { transform: translateX(-100%); }
@@ -116,9 +112,32 @@
   100% { transform: translateX(-100%); }
 }
 
-@keyframes trainWheels {
+@keyframes rotateWheel {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+@keyframes connectingRodMove {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(2px, 3px) rotate(5deg); }
+  50% { transform: translate(0, 5px) rotate(0deg); }
+  75% { transform: translate(-2px, 3px) rotate(-5deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+@keyframes smokeRise {
+  0% { 
+    opacity: 0.9;
+    transform: translateY(0) scale(1) translateX(0);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateY(-30px) scale(1.8) translateX(15px);
+  }
+  100% { 
+    opacity: 0;
+    transform: translateY(-60px) scale(2.5) translateX(30px);
+  }
 }
 
 @keyframes dustFloat {
@@ -127,428 +146,1173 @@
     transform: translateY(0) translateX(0); 
   }
   25% { 
-    opacity: 0.6; 
+    opacity: 0.7; 
   }
   75% { 
     opacity: 0.4; 
   }
   100% { 
     opacity: 0; 
-    transform: translateY(-100px) translateX(100px); 
+    transform: translateY(-100px) translateX(200px); 
   }
 }
 
-@keyframes trainSmoke {
+@keyframes heatWave {
   0% { 
-    opacity: 0.9;
-    transform: translateY(0) scale(1);
+    opacity: 0.1;
+    transform: translateY(0) scaleY(1);
+  }
+  50% { 
+    opacity: 0.3;
+    transform: translateY(-3px) scaleY(1.05);
   }
   100% { 
-    opacity: 0;
-    transform: translateY(-60px) translateX(20px) scale(2.5);
+    opacity: 0.1;
+    transform: translateY(0) scaleY(1);
   }
 }
 
 @keyframes mirageEffect {
-  0% { opacity: 0.2; transform: scaleY(0.8); }
-  50% { opacity: 0.4; transform: scaleY(1.1); }
-  100% { opacity: 0.2; transform: scaleY(0.8); }
+  0% { opacity: 0.1; transform: scaleY(0.9) translateY(1px); }
+  50% { opacity: 0.2; transform: scaleY(1.1) translateY(-1px); }
+  100% { opacity: 0.1; transform: scaleY(0.9) translateY(1px); }
 }
 
-/* Стили пустыни */
-.desert-ground {
+@keyframes filmGrain {
+  0%, 100% { background-position: 0 0; }
+  20% { background-position: 20% 20%; }
+  40% { background-position: -20% 40%; }
+  60% { background-position: 40% -20%; }
+  80% { background-position: -40% -40%; }
+}
+
+@keyframes tumbleweenRoll {
+  0% { transform: translateX(100%) rotate(0deg); }
+  100% { transform: translateX(-200%) rotate(1080deg); }
+}
+
+@keyframes shadowMove {
+  0% { transform: translateX(0) scaleX(1); opacity: 0.1; }
+  50% { transform: translateX(50px) scaleX(1.2); opacity: 0.2; }
+  100% { transform: translateX(0) scaleX(1); opacity: 0.1; }
+}
+
+/* Фоновые элементы и текстуры */
+.bg-desert-deep {
+  background-color: #E8C087;
+}
+
+.sky-gradient {
+  background: linear-gradient(to bottom, 
+    #87CEEB 0%, 
+    #A4D4F0 20%, 
+    #C2E0FA 40%, 
+    #E0ECF5 60%, 
+    #F5E6CB 80%, 
+    #F8E7C6 100%);
+  height: 100%;
+  opacity: 0.9;
+}
+
+.sun {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at center,
+    #FFFFFF 0%,
+    #FFEB99 20%,
+    #FFD54F 40%,
+    #FF9800 60%, 
+    #FF8F00 80%,
+    #FF6F00 100%
+  );
+  box-shadow: 
+    0 0 60px 30px rgba(255, 207, 72, 0.3),
+    0 0 100px 60px rgba(255, 207, 72, 0.2),
+    0 0 140px 90px rgba(255, 207, 72, 0.1);
+  filter: blur(1px) brightness(1.1);
+  z-index: 2;
+}
+
+.sun-corona {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.7) 0%,
+    rgba(255, 255, 255, 0.2) 20%,
+    rgba(255, 255, 255, 0.1) 40%,
+    rgba(255, 255, 255, 0) 70%
+  );
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  opacity: 0.5;
+}
+
+.sun-flare {
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 220, 0.3) 0%,
+    rgba(255, 255, 220, 0.1) 40%,
+    rgba(255, 255, 220, 0) 70%
+  );
+  transform: translate(-50%, -50%) rotate(45deg);
+  z-index: 1;
+  filter: blur(5px);
+}
+
+.mountains-far {
+  bottom: 40%;
+  left: 0;
+  right: 0;
+  height: 15%;
   background-image: 
-    linear-gradient(to bottom, rgba(180, 120, 40, 0.8), rgba(210, 160, 80, 0.8)),
-    url('https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?q=80&w=1828&auto=format&fit=crop');
+    url('https://images.unsplash.com/photo-1502581273566-37f357161849?q=80&w=2070&auto=format&fit=crop');
   background-size: cover;
   background-position: center;
-  position: relative;
+  filter: brightness(0.6) contrast(0.8) saturate(0.7) blur(2px);
+  mask-image: linear-gradient(to bottom, 
+    black 0%,
+    black 70%,
+    transparent 100%
+  );
+  z-index: 3;
+  opacity: 0.9;
+  animation: moveLeftSlow 150s linear infinite;
 }
 
-.desert-ground::after {
+.mountains-mid {
+  bottom: 38%;
+  left: 0;
+  right: 0;
+  height: 18%;
+  background-image: 
+    url('https://images.unsplash.com/photo-1509316785289-025f5b846b35?q=80&w=2076&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center 70%;
+  filter: brightness(0.7) contrast(0.9) saturate(0.8) blur(1px);
+  mask-image: linear-gradient(to bottom, 
+    black 0%,
+    black 80%,
+    transparent 100%
+  );
+  z-index: 4;
+  opacity: 0.95;
+  animation: moveLeftMedium 100s linear infinite;
+}
+
+.mountains-near {
+  bottom: 35%;
+  left: 0;
+  right: 0;
+  height: 20%;
+  background-image: 
+    url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=2021&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center 60%;
+  filter: brightness(0.8) contrast(1) saturate(0.9);
+  mask-image: linear-gradient(to bottom, 
+    black 0%,
+    black 90%,
+    transparent 100%
+  );
+  z-index: 5;
+  opacity: 1;
+  animation: moveLeftMedium 70s linear infinite;
+}
+
+.desert-floor {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 35%;
+  background-image: 
+    url('https://images.unsplash.com/photo-1682686580186-b55d2a91053c?q=80&w=2055&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  filter: brightness(1.1) contrast(1.05) saturate(1.2);
+  z-index: 6;
+}
+
+.desert-floor::after {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 30px;
-  background: linear-gradient(to bottom, rgba(210, 160, 80, 0.7), transparent);
+  height: 10px;
+  background: linear-gradient(to bottom, rgba(232, 192, 135, 0.7), transparent);
 }
 
-.mountain-range-far {
-  background-image: 
-    linear-gradient(to bottom, rgba(130, 100, 60, 0.4), rgba(160, 120, 70, 0.7)),
-    url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=1827&auto=format&fit=crop');
-  background-size: cover;
-  background-position: center;
-  mask-image: linear-gradient(to top, 
-    transparent 0%,
-    black 25%,
-    black 100%
+.cloud-shadow {
+  position: absolute;
+  height: 100px;
+  width: 300px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0.1) 0%,
+    rgba(0, 0, 0, 0.05) 50%,
+    transparent 80%
   );
+  border-radius: 50%;
+  filter: blur(20px);
+  z-index: 7;
+  animation: shadowMove 45s infinite alternate ease-in-out;
 }
 
-.mountain-range-mid {
-  background-image: 
-    linear-gradient(to bottom, rgba(150, 110, 70, 0.5), rgba(170, 130, 80, 0.8)),
-    url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1608&auto=format&fit=crop');
-  background-size: cover;
-  background-position: center;
-  mask-image: linear-gradient(to top, 
-    transparent 0%,
-    black 15%,
-    black 100%
+.cloud-shadow-1 {
+  bottom: 20%;
+  left: 30%;
+  animation-delay: 0s;
+}
+
+.cloud-shadow-2 {
+  bottom: 15%;
+  left: 70%;
+  animation-delay: 15s;
+  width: 400px;
+}
+
+/* Рельсы и шпалы с текстурами */
+.railroad-base {
+  bottom: 35%;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background-color: #32281e;
+  z-index: 8;
+}
+
+.railroad-tracks-left {
+  bottom: calc(35% + 2px);
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(to right,
+    #5a5a5a 0%,
+    #8a8a8a 30%,
+    #5a5a5a 70%,
+    #3a3a3a 100%
   );
+  transform: translateY(-3px);
+  z-index: 9;
 }
 
-.sand-dunes-foreground {
-  background-image: 
-    linear-gradient(to bottom, rgba(200, 140, 60, 0.3), rgba(220, 170, 90, 0.6)),
-    url('https://images.unsplash.com/photo-1473580044384-7ba9967e16a0?q=80&w=1740&auto=format&fit=crop');
-  background-size: cover;
-  background-position: bottom;
-  mask-image: linear-gradient(to bottom, 
-    transparent 0%,
-    black 20%,
-    black 100%
+.railroad-tracks-right {
+  bottom: calc(35% + 2px);
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(to right,
+    #5a5a5a 0%,
+    #8a8a8a 30%,
+    #5a5a5a 70%,
+    #3a3a3a 100%
   );
-  box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.1);
+  transform: translateY(3px);
+  z-index: 9;
 }
 
-/* Рельсы и шпалы */
 .railroad-ties {
+  bottom: calc(35% - 4px);
+  left: 0;
+  right: 0;
+  height: 3px;
   background-image: repeating-linear-gradient(
     to right,
     transparent,
-    transparent 20px,
-    #5a4530 20px,
-    #5a4530 40px
+    transparent 15px,
+    #5a4530 15px,
+    #5a4530 30px
   );
-  border-top: 2px solid #777;
+  z-index: 8;
 }
 
-/* Стили поезда */
-.train-container {
-  height: 80px;
-  display: flex;
-  align-items: flex-end;
-  transform: translateY(15px);
-}
-
-.train-engine {
-  width: 200px;
-  height: 80px;
-  background-color: #d04030;
-  position: relative;
-  border-radius: 5px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  z-index: 20;
-}
-
-.train-cabin {
-  position: absolute;
-  width: 80px;
-  height: 40px;
-  top: -40px;
-  right: 30px;
-  background-color: #c03020;
-  border-radius: 5px 5px 0 0;
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.train-cabin::before {
-  content: '';
-  position: absolute;
-  width: 15px;
-  height: 20px;
-  background-color: #eeeeee;
-  top: 10px;
-  left: 15px;
-  border-radius: 3px;
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-}
-
-.train-cabin::after {
-  content: '';
-  position: absolute;
-  width: 15px;
-  height: 20px;
-  background-color: #eeeeee;
-  top: 10px;
-  right: 15px;
-  border-radius: 3px;
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-}
-
-.train-nose {
-  position: absolute;
-  width: 50px;
-  height: 40px;
-  background-color: #b02010;
+.railroad-ballast {
+  bottom: calc(35% - 10px);
   left: 0;
+  right: 0;
+  height: 12px;
+  background-image: 
+    url('https://images.unsplash.com/photo-1516711345667-ebafb3ebea28?q=80&w=2070&auto=format&fit=crop');
+  background-size: 100px;
+  filter: brightness(0.7) contrast(1.2) saturate(0.6);
+  opacity: 0.9;
+  z-index: 7;
+}
+
+/* Детали окружения */
+.desert-details {
+  position: absolute;
   bottom: 0;
-  border-radius: 10px 0 0 0;
-}
-
-.train-nose::before {
-  content: '';
-  position: absolute;
-  width: 20px;
-  height: 10px;
-  background-color: #222222;
-  bottom: 10px;
-  right: 5px;
-  border-radius: 5px;
-}
-
-.train-wheels {
-  position: absolute;
-  width: 100%;
-  height: 30px;
-  bottom: -15px;
-  display: flex;
-  justify-content: space-around;
-}
-
-.train-wheels::before, .train-wheels::after {
-  content: '';
-  width: 30px;
-  height: 30px;
-  background-color: #222222;
-  border-radius: 50%;
-  box-shadow: inset 0 0 0 5px #444, inset 0 0 0 10px #222;
-  animation: trainWheels 2s linear infinite;
-}
-
-.train-chimney {
-  position: absolute;
-  width: 20px;
-  height: 30px;
-  background-color: #b02010;
-  top: -70px;
-  left: 50px;
-  border-radius: 4px 4px 0 0;
-}
-
-.smoke-puff {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  background-color: rgba(220, 220, 220, 0.8);
-  border-radius: 50%;
-  top: -20px;
   left: 0;
-  animation: trainSmoke 3s ease-out infinite;
+  right: 0;
+  height: 35%;
+  z-index: 10;
+  animation: moveLeftMedium 60s linear infinite;
 }
 
-.delay-1 {
-  animation-delay: 1s;
-}
-
-.delay-2 {
-  animation-delay: 2s;
-}
-
-.train-car {
-  width: 120px;
-  height: 60px;
-  background-color: #3070B0;
-  margin-left: 10px;
-  border-radius: 5px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  position: relative;
-}
-
-.car-1 {
-  background-color: #3070B0;
-}
-
-.car-2 {
-  background-color: #30A070;
-}
-
-.car-3 {
-  background-color: #E0B030;
-}
-
-.train-car::before, .train-car::after {
-  content: '';
+.cactus {
   position: absolute;
-  width: 20px;
-  height: 20px;
-  background-color: #222222;
-  bottom: -10px;
-  border-radius: 50%;
-  box-shadow: inset 0 0 0 4px #444, inset 0 0 0 7px #222;
-  animation: trainWheels 2s linear infinite;
+  background-color: #1E5631;
+  filter: brightness(0.9) saturate(0.8);
 }
 
-.train-car::before {
-  left: 20px;
-}
-
-.train-car::after {
-  right: 20px;
-}
-
-/* Пыльные облака */
-.dust-cloud {
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle, rgba(210, 170, 90, 0.4) 0%, rgba(210, 170, 90, 0) 70%);
-  border-radius: 50%;
-  animation: dustFloat 12s ease-out infinite;
-  z-index: 5;
-}
-
-.dust-1 {
-  bottom: 15%;
-  left: 20%;
-  animation-delay: 0s;
-  animation-duration: 15s;
-}
-
-.dust-2 {
-  bottom: 30%;
-  left: 50%;
-  animation-delay: 3s;
-  animation-duration: 17s;
-}
-
-.dust-3 {
-  bottom: 25%;
-  left: 70%;
-  animation-delay: 6s;
-  animation-duration: 14s;
-}
-
-.dust-4 {
-  bottom: 35%;
-  left: 30%;
-  animation-delay: 9s;
-  animation-duration: 16s;
-}
-
-.dust-overlay {
-  opacity: 0.3;
-  mix-blend-mode: overlay;
-}
-
-.train-dust {
-  position: absolute;
-  bottom: 35%;
-  left: 10%;
-  width: 250px;
-  height: 30px;
-  background: linear-gradient(to right, rgba(210, 170, 90, 0.7), rgba(210, 170, 90, 0));
-  filter: blur(8px);
-  z-index: 15;
-}
-
-/* Миражи */
-.mirage {
-  position: absolute;
-  background: rgba(255, 255, 255, 0.1);
-  filter: blur(3px);
-  border-radius: 50%;
-  animation: mirageEffect 8s ease-in-out infinite;
-}
-
-.mirage-1 {
-  bottom: 30%;
-  left: 60%;
-  width: 200px;
-  height: 20px;
-  animation-delay: 0s;
-}
-
-.mirage-2 {
-  bottom: 28%;
-  left: 25%;
-  width: 150px;
-  height: 15px;
-  animation-delay: 4s;
-}
-
-/* Кактусы и камни */
 .cactus-large {
-  width: 20px;
+  width: 15px;
+  height: 80px;
+  bottom: 0;
+  border-radius: 5px;
+}
+
+.cactus-medium {
+  width: 12px;
   height: 60px;
-  background-color: #285218;
-  position: absolute;
+  bottom: 0;
+  border-radius: 4px;
+}
+
+.cactus-small {
+  width: 8px;
+  height: 40px;
   bottom: 0;
   border-radius: 3px;
 }
 
-.cactus-large::before, .cactus-large::after {
+.cactus::before, .cactus::after {
   content: '';
   position: absolute;
-  background-color: #285218;
-  border-radius: 3px;
+  background-color: inherit;
+  border-radius: inherit;
 }
 
 .cactus-large::before {
   width: 30px;
-  height: 10px;
-  top: 15px;
+  height: 12px;
+  top: 25px;
   left: -20px;
 }
 
 .cactus-large::after {
   width: 30px;
-  height: 10px;
-  top: 30px;
+  height: 12px;
+  top: 45px;
   right: -20px;
 }
 
-.cactus-small {
-  width: 12px;
-  height: 40px;
-  background-color: #285218;
-  position: absolute;
-  bottom: 0;
-  border-radius: 3px;
+.cactus-medium::before {
+  width: 25px;
+  height: 10px;
+  top: 20px;
+  left: -15px;
+}
+
+.cactus-medium::after {
+  width: 20px;
+  height: 8px;
+  top: 35px;
+  right: -15px;
 }
 
 .cactus-small::before {
+  width: 15px;
+  height: 8px;
+  top: 15px;
+  left: -10px;
+}
+
+.cactus-1 { left: 25%; filter: brightness(0.85); }
+.cactus-2 { left: 45%; filter: brightness(0.9); }
+.cactus-3 { left: 65%; filter: brightness(0.95); }
+.cactus-4 { left: 85%; filter: brightness(0.9); }
+.cactus-5 { left: 15%; filter: brightness(0.8); }
+
+.rock {
+  position: absolute;
+  bottom: 0;
+  background-color: #9a7a5a;
+  border-radius: 8px 12px 4px 6px;
+  filter: brightness(0.8) contrast(1.2);
+}
+
+.rock-large {
+  width: 80px;
+  height: 50px;
+}
+
+.rock-medium {
+  width: 50px;
+  height: 30px;
+}
+
+.rock-small {
+  width: 30px;
+  height: 20px;
+}
+
+.rock-cluster {
+  width: 100px;
+  height: 40px;
+}
+
+.rock::before, .rock::after {
+  content: '';
+  position: absolute;
+  background-color: inherit;
+  filter: brightness(0.9);
+}
+
+.rock-large::before {
+  width: 40px;
+  height: 30px;
+  top: -15px;
+  left: 15px;
+  border-radius: 10px 12px 8px 5px;
+}
+
+.rock-large::after {
+  width: 30px;
+  height: 20px;
+  top: -25px;
+  left: 25px;
+  border-radius: 12px 8px 6px 10px;
+}
+
+.rock-cluster::before {
+  width: 60px;
+  height: 30px;
+  top: -10px;
+  left: 10px;
+  border-radius: 12px 8px 6px 10px;
+}
+
+.rock-cluster::after {
+  width: 40px;
+  height: 25px;
+  top: -20px;
+  left: 25px;
+  border-radius: 8px 12px 10px 6px;
+}
+
+.rock-1 { left: 15%; filter: brightness(0.75); }
+.rock-2 { left: 40%; filter: brightness(0.8); }
+.rock-3 { left: 70%; filter: brightness(0.85); }
+.rock-4 { left: 90%; filter: brightness(0.8); }
+.rock-5 { left: 55%; filter: brightness(0.75); }
+
+.dead-tree {
+  position: absolute;
+  bottom: 0;
+  width: 8px;
+  height: 70px;
+  background-color: #564132;
+  border-radius: 2px;
+  transform: rotate(5deg);
+}
+
+.dead-tree::before, .dead-tree::after {
+  content: '';
+  position: absolute;
+  background-color: inherit;
+  border-radius: 2px;
+}
+
+.dead-tree::before {
+  width: 40px;
+  height: 5px;
+  top: 15px;
+  left: -5px;
+  transform: rotate(-25deg);
+}
+
+.dead-tree::after {
+  width: 30px;
+  height: 5px;
+  top: 30px;
+  right: -15px;
+  transform: rotate(35deg);
+}
+
+.tree-1 { 
+  left: 30%; 
+  transform: rotate(-5deg) scale(0.9);
+}
+
+.tree-2 { 
+  left: 75%; 
+  transform: rotate(8deg) scale(1.1);
+}
+
+.tumbleweed {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background-color: #AA8866;
+  border-radius: 50%;
+  filter: brightness(0.9) contrast(1.1) blur(1px);
+  animation: tumbleweenRoll 30s linear infinite;
+}
+
+.tumbleweed::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: inherit;
+  border-radius: 50%;
+  filter: brightness(0.8);
+  transform: scale(0.8) translate(5px, -5px);
+}
+
+.tumbleweed-1 { 
+  bottom: 5px; 
+  animation-duration: 35s;
+  animation-delay: 0s;
+}
+
+.tumbleweed-2 { 
+  bottom: 8px; 
+  animation-duration: 40s;
+  animation-delay: 10s;
+}
+
+.tumbleweed-3 { 
+  bottom: 3px; 
+  animation-duration: 32s;
+  animation-delay: 20s;
+}
+
+/* Поезд и детализация */
+.train-container {
+  position: absolute;
+  bottom: 35%;
+  left: 10%;
+  height: 100px;
+  display: flex;
+  align-items: flex-end;
+  z-index: 20;
+}
+
+.locomotive {
+  position: relative;
+  width: 180px;
+  height: 90px;
+  z-index: 25;
+}
+
+.locomotive-body {
+  position: absolute;
+  bottom: 25px;
+  width: 180px;
+  height: 65px;
+  background-color: #8B0000;
+  border-radius: 8px 5px 0 0;
+  background-image: linear-gradient(
+    to bottom,
+    #AA0000 0%,
+    #880000 50%,
+    #660000 100%
+  );
+  box-shadow: 
+    -5px 5px 15px rgba(0, 0, 0, 0.2),
+    0px 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.locomotive-cabin {
+  position: absolute;
+  bottom: 90px;
+  right: 40px;
+  width: 80px;
+  height: 50px;
+  background-color: #840000;
+  border-radius: 8px 8px 0 0;
+  background-image: linear-gradient(
+    to bottom,
+    #9A0000 0%,
+    #7A0000 100%
+  );
+  box-shadow: 
+    2px -2px 10px rgba(0, 0, 0, 0.15),
+    -2px -2px 10px rgba(0, 0, 0, 0.15);
+}
+
+.locomotive-cabin::before {
   content: '';
   position: absolute;
   width: 20px;
-  height: 8px;
-  background-color: #285218;
-  top: 10px;
-  left: -15px;
-  border-radius: 3px;
-}
-
-.rock-formation {
-  width: 80px;
   height: 30px;
-  background-color: #9a7a5a;
-  position: absolute;
-  bottom: 0;
-  border-radius: 10px 10px 5px 5px;
+  background-color: #EEEEEE;
+  top: 10px;
+  left: 20px;
+  border-radius: 4px;
+  background-image: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(200, 200, 200, 0.7) 50%,
+    rgba(180, 180, 180, 0.9) 100%
+  );
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
-.rock-formation::before {
+.locomotive-cabin::after {
   content: '';
   position: absolute;
-  width: 40px;
-  height: 20px;
-  background-color: #8a6a4a;
-  top: -10px;
-  left: 10px;
-  border-radius: 8px;
+  width: 20px;
+  height: 30px;
+  background-color: #EEEEEE;
+  top: 10px;
+  right: 20px;
+  border-radius: 4px;
+  background-image: linear-gradient(
+    to right,
+    rgba(180, 180, 180, 0.9) 0%,
+    rgba(200, 200, 200, 0.7) 50%,
+    rgba(255, 255, 255, 0.9) 100%
+  );
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
-.rock-formation::after {
+.locomotive-chimney {
+  position: absolute;
+  bottom: 140px;
+  left: 50px;
+  width: 25px;
+  height: 40px;
+  background-color: #660000;
+  border-radius: 5px 5px 0 0;
+  background-image: linear-gradient(
+    to right,
+    #660000 0%,
+    #880000 50%,
+    #660000 100%
+  );
+  box-shadow: 
+    2px -2px 5px rgba(0, 0, 0, 0.2),
+    -2px -2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 26;
+}
+
+.smoke-puff {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  background-image: radial-gradient(
+    circle at center,
+    rgba(240, 240, 240, 0.95) 0%,
+    rgba(200, 200, 200, 0.8) 50%,
+    rgba(150, 150, 150, 0) 100%
+  );
+  border-radius: 50%;
+  filter: blur(3px);
+  animation: smokeRise 3s ease-out forwards;
+  z-index: 27;
+}
+
+.smoke-1 { 
+  top: -25px;
+  left: 0px;
+  animation-delay: 0s;
+}
+
+.smoke-2 { 
+  top: -25px;
+  left: 0px;
+  animation-delay: 0.6s;
+}
+
+.smoke-3 { 
+  top: -25px;
+  left: 0px;
+  animation-delay: 1.2s;
+}
+
+.smoke-4 { 
+  top: -25px;
+  left: 0px;
+  animation-delay: 1.8s;
+}
+
+.smoke-5 { 
+  top: -25px;
+  left: 0px;
+  animation-delay: 2.4s;
+}
+
+.locomotive-front {
+  position: absolute;
+  bottom: 25px;
+  left: 0;
+  width: 40px;
+  height: 65px;
+  background-color: #660000;
+  border-radius: 10px 0 0 0;
+  background-image: linear-gradient(
+    to right,
+    #550000 0%,
+    #770000 100%
+  );
+}
+
+.locomotive-details {
+  position: absolute;
+  bottom: 50px;
+  left: 10px;
+  width: 160px;
+  height: 15px;
+  background-color: #550000;
+  border-radius: 2px;
+}
+
+.locomotive-details::before {
   content: '';
   position: absolute;
   width: 25px;
-  height: 15px;
-  background-color: #7a5a3a;
+  height: 25px;
+  background-color: #EEEEEE;
+  border-radius: 50%;
   top: -15px;
-  left: 25px;
-  border-radius: 6px;
+  left: 20px;
+  background-image: radial-gradient(
+    circle at center,
+    #FFFFFF 0%,
+    #DDDDDD 50%,
+    #AAAAAA 100%
+  );
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.3);
+}
+
+.locomotive-wheels {
+  position: absolute;
+  bottom: 0;
+  left: 20px;
+  width: 140px;
+  height: 30px;
+}
+
+.wheel {
+  position: absolute;
+  background-color: #222222;
+  border-radius: 50%;
+  background-image: radial-gradient(
+    circle at center,
+    #555555 0%,
+    #333333 40%,
+    #111111 100%
+  );
+  box-shadow: 
+    0 0 5px rgba(0, 0, 0, 0.5),
+    inset 0 0 10px rgba(0, 0, 0, 0.8);
+}
+
+.wheel::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  height: 70%;
+  background-color: #444444;
+  border-radius: 50%;
+  background-image: radial-gradient(
+    circle at center,
+    #666666 0%,
+    #444444 50%,
+    #222222 100%
+  );
+}
+
+.wheel::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40%;
+  height: 40%;
+  background-color: #222222;
+  border-radius: 50%;
+  background-image: radial-gradient(
+    circle at center,
+    #444444 0%,
+    #222222 70%,
+    #111111 100%
+  );
+}
+
+.wheel-large {
+  width: 35px;
+  height: 35px;
+  bottom: -15px;
+  animation: rotateWheel 0.7s linear infinite;
+}
+
+.wheel-small {
+  width: 25px;
+  height: 25px;
+  bottom: -12px;
+  animation: rotateWheel 0.8s linear infinite;
+}
+
+.wheel-1 { left: 20px; }
+.wheel-2 { left: 70px; }
+.wheel-3 { left: 120px; }
+
+.connecting-rod {
+  position: absolute;
+  width: 80px;
+  height: 5px;
+  bottom: 0;
+  left: 40px;
+  background-color: #777777;
+  border-radius: 2px;
+  transform-origin: 5px center;
+  animation: connectingRodMove 0.7s linear infinite;
+  z-index: 24;
+}
+
+.train-car {
+  position: relative;
+  margin-left: 10px;
+  z-index: 23;
+}
+
+.freight-car {
+  width: 140px;
+  height: 60px;
+}
+
+.freight-car-body {
+  position: absolute;
+  bottom: 25px;
+  width: 140px;
+  height: 60px;
+  background-color: #8B4513;
+  border-radius: 5px 5px 0 0;
+  background-image: linear-gradient(
+    to bottom,
+    #9B5523 0%,
+    #7B3503 100%
+  );
+  box-shadow: 
+    5px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.freight-car-details {
+  position: absolute;
+  bottom: 45px;
+  left: 10px;
+  width: 120px;
+  height: 20px;
+  background-color: #6B3503;
+  border-radius: 3px;
+}
+
+.freight-car-details::before, .freight-car-details::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 10px;
+  background-color: #5B2503;
+  border-radius: 2px;
+}
+
+.freight-car-details::before {
+  top: -15px;
+  left: 20px;
+}
+
+.freight-car-details::after {
+  top: -15px;
+  right: 20px;
+}
+
+.freight-car-wheels {
+  position: absolute;
+  bottom: 0;
+  left: 20px;
+  width: 100px;
+  height: 25px;
+}
+
+.passenger-car {
+  width: 160px;
+  height: 70px;
+}
+
+.passenger-car-body {
+  position: absolute;
+  bottom: 25px;
+  width: 160px;
+  height: 70px;
+  background-color: #4682B4;
+  border-radius: 8px 8px 0 0;
+  background-image: linear-gradient(
+    to bottom,
+    #5692C4 0%,
+    #3672A4 100%
+  );
+  box-shadow: 
+    5px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.passenger-car-windows {
+  position: absolute;
+  bottom: 45px;
+  left: 15px;
+  width: 130px;
+  height: 25px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.passenger-car-windows::before, .passenger-car-windows::after {
+  content: '';
+  width: 20px;
+  height: 20px;
+  background-color: #ADD8E6;
+  border-radius: 3px;
+  background-image: linear-gradient(
+    to right,
+    rgba(220, 240, 255, 0.9) 0%,
+    rgba(173, 216, 230, 0.7) 50%,
+    rgba(135, 206, 235, 0.9) 100%
+  );
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.passenger-car-details {
+  position: absolute;
+  bottom: 35px;
+  left: 10px;
+  width: 140px;
+  height: 2px;
+  background-color: #2672A4;
+}
+
+.passenger-car-wheels {
+  position: absolute;
+  bottom: 0;
+  left: 30px;
+  width: 100px;
+  height: 25px;
+}
+
+.car-2 .passenger-car-body {
+  background-color: #228B22;
+  background-image: linear-gradient(
+    to bottom,
+    #32AB32 0%,
+    #127B12 100%
+  );
+}
+
+.car-3 .passenger-car-body {
+  background-color: #DAA520;
+  background-image: linear-gradient(
+    to bottom,
+    #EAB530 0%,
+    #CA9510 100%
+  );
+}
+
+/* Эффекты движения и атмосферы */
+.train-speed-lines {
+  position: absolute;
+  bottom: 25px;
+  left: -40px;
+  width: 30px;
+  height: 60px;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  opacity: 0.5;
+  filter: blur(2px);
+}
+
+.train-dust-cloud {
+  position: absolute;
+  bottom: 10px;
+  left: -50px;
+  width: 100px;
+  height: 20px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(210, 180, 140, 0.8) 0%,
+    rgba(210, 180, 140, 0.4) 50%,
+    rgba(210, 180, 140, 0) 100%
+  );
+  filter: blur(5px);
+  z-index: 19;
+}
+
+.dust-layer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    url('https://images.unsplash.com/photo-1548266652-99cf27701ced?q=80&w=2070&auto=format&fit=crop');
+  background-size: cover;
+  opacity: 0.08;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.dust-layer-1 {
+  z-index: 30;
+  animation: moveLeftFast 20s linear infinite;
+  filter: blur(3px);
+}
+
+.dust-layer-2 {
+  z-index: 31;
+  animation: moveLeftFast 30s linear infinite;
+  opacity: 0.06;
+  filter: blur(2px);
+}
+
+.dust-layer-3 {
+  z-index: 32;
+  animation: moveLeftFast 40s linear infinite;
+  opacity: 0.04;
+  filter: blur(1px);
+}
+
+.sand-dunes {
+  position: absolute;
+  height: 15%;
+  width: 300%;
+  background-image: 
+    url('https://images.unsplash.com/photo-1473580044384-7ba9967e16a0?q=80&w=2070&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center bottom;
+  filter: brightness(1.1) contrast(1.05) saturate(1.2);
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 40%,
+    black 100%
+  );
+}
+
+.sand-dunes-1 {
+  bottom: 5%;
+  z-index: 33;
+  animation: moveLeftFast 15s linear infinite;
+  opacity: 0.7;
+  filter: blur(1px);
+}
+
+.sand-dunes-2 {
+  bottom: 0;
+  z-index: 34;
+  animation: moveLeftFast 10s linear infinite;
+  opacity: 0.8;
+  filter: blur(0.5px);
+}
+
+.sand-dunes-3 {
+  bottom: -5%;
+  z-index: 35;
+  animation: moveLeftFast 5s linear infinite;
+  opacity: 0.9;
+}
+
+.mirage-effect {
+  position: absolute;
+  bottom: 35%;
+  left: 0;
+  right: 0;
+  height: 15px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.05),
+    rgba(255, 255, 255, 0)
+  );
+  filter: blur(2px);
+  transform-origin: bottom;
+  animation: mirageEffect 5s ease-in-out infinite;
+  z-index: 20;
+}
+
+.heat-wave {
+  position: absolute;
+  bottom: 35%;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background: url('https://www.transparenttextures.com/patterns/asfalt-light.png');
+  background-size: 100px;
+  opacity: 0.05;
+  filter: blur(1px);
+  mask-image: linear-gradient(
+    to top,
+    black 0%,
+    transparent 100%
+  );
+  animation: heatWave 3s ease-in-out infinite;
+  z-index: 15;
+}
+
+.foreground-dust {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    url('https://images.unsplash.com/photo-1526402978125-f1d6df91cbac?q=80&w=1935&auto=format&fit=crop');
+  background-size: cover;
+  opacity: 0.1;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 36;
+}
+
+/* Кинематографические эффекты */
+.lens-effect {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at center,
+    transparent 30%,
+    rgba(0, 0, 0, 0.05) 80%,
+    rgba(0, 0, 0, 0.1) 100%
+  );
+  pointer-events: none;
+  z-index: 37;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+  z-index: 38;
+}
+
+.film-grain {
+  position: absolute;
+  inset: 0;
+  background-image: url('https://www.transparenttextures.com/patterns/noise-pattern-with-subtle-cross-lines.png');
+  background-size: 200px;
+  animation: filmGrain 0.5s steps(5) infinite;
+  pointer-events: none;
+  z-index: 39;
+}
+
+.film-scratches {
+  position: absolute;
+  inset: 0;
+  background-image: url('https://www.transparenttextures.com/patterns/scratches.png');
+  background-size: 300px;
+  transform: translateY(-30%);
+  animation: moveLeftFast 10s linear infinite;
+  pointer-events: none;
+  z-index: 39;
 }
