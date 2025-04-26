@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -7,6 +8,7 @@ export default {
 		"./components/**/*.{ts,tsx}",
 		"./app/**/*.{ts,tsx}",
 		"./src/**/*.{ts,tsx}",
+		"./1745660162507430918.html"
 	],
 	prefix: "",
 	theme: {
@@ -61,6 +63,11 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				desert: {
+					sand: '#E6C587',
+					dune: '#D4A76A',
+					rock: '#9A7A5A'
 				}
 			},
 			borderRadius: {
@@ -84,11 +91,26 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'moveLeftSlow': {
+					'0%': { transform: 'translateX(0)' },
+					'100%': { transform: 'translateX(-100%)' }
+				},
+				'moveLeftMedium': {
+					'0%': { transform: 'translateX(0)' },
+					'100%': { transform: 'translateX(-100%)' }
+				},
+				'moveLeftFast': {
+					'0%': { transform: 'translateX(0)' },
+					'100%': { transform: 'translateX(-100%)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'moveLeftSlow': 'moveLeftSlow 120s linear infinite',
+				'moveLeftMedium': 'moveLeftMedium 80s linear infinite',
+				'moveLeftFast': 'moveLeftFast 30s linear infinite'
 			}
 		}
 	},

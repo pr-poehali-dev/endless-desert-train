@@ -99,3 +99,456 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Анимации */
+@keyframes moveLeftSlow {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+@keyframes moveLeftMedium {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+@keyframes moveLeftFast {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+@keyframes trainWheels {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes dustFloat {
+  0% { 
+    opacity: 0; 
+    transform: translateY(0) translateX(0); 
+  }
+  25% { 
+    opacity: 0.6; 
+  }
+  75% { 
+    opacity: 0.4; 
+  }
+  100% { 
+    opacity: 0; 
+    transform: translateY(-100px) translateX(100px); 
+  }
+}
+
+@keyframes trainSmoke {
+  0% { 
+    opacity: 0.9;
+    transform: translateY(0) scale(1);
+  }
+  100% { 
+    opacity: 0;
+    transform: translateY(-60px) translateX(20px) scale(2.5);
+  }
+}
+
+@keyframes mirageEffect {
+  0% { opacity: 0.2; transform: scaleY(0.8); }
+  50% { opacity: 0.4; transform: scaleY(1.1); }
+  100% { opacity: 0.2; transform: scaleY(0.8); }
+}
+
+/* Стили пустыни */
+.desert-ground {
+  background-image: 
+    linear-gradient(to bottom, rgba(180, 120, 40, 0.8), rgba(210, 160, 80, 0.8)),
+    url('https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?q=80&w=1828&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.desert-ground::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 30px;
+  background: linear-gradient(to bottom, rgba(210, 160, 80, 0.7), transparent);
+}
+
+.mountain-range-far {
+  background-image: 
+    linear-gradient(to bottom, rgba(130, 100, 60, 0.4), rgba(160, 120, 70, 0.7)),
+    url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=1827&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  mask-image: linear-gradient(to top, 
+    transparent 0%,
+    black 25%,
+    black 100%
+  );
+}
+
+.mountain-range-mid {
+  background-image: 
+    linear-gradient(to bottom, rgba(150, 110, 70, 0.5), rgba(170, 130, 80, 0.8)),
+    url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1608&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  mask-image: linear-gradient(to top, 
+    transparent 0%,
+    black 15%,
+    black 100%
+  );
+}
+
+.sand-dunes-foreground {
+  background-image: 
+    linear-gradient(to bottom, rgba(200, 140, 60, 0.3), rgba(220, 170, 90, 0.6)),
+    url('https://images.unsplash.com/photo-1473580044384-7ba9967e16a0?q=80&w=1740&auto=format&fit=crop');
+  background-size: cover;
+  background-position: bottom;
+  mask-image: linear-gradient(to bottom, 
+    transparent 0%,
+    black 20%,
+    black 100%
+  );
+  box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Рельсы и шпалы */
+.railroad-ties {
+  background-image: repeating-linear-gradient(
+    to right,
+    transparent,
+    transparent 20px,
+    #5a4530 20px,
+    #5a4530 40px
+  );
+  border-top: 2px solid #777;
+}
+
+/* Стили поезда */
+.train-container {
+  height: 80px;
+  display: flex;
+  align-items: flex-end;
+  transform: translateY(15px);
+}
+
+.train-engine {
+  width: 200px;
+  height: 80px;
+  background-color: #d04030;
+  position: relative;
+  border-radius: 5px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  z-index: 20;
+}
+
+.train-cabin {
+  position: absolute;
+  width: 80px;
+  height: 40px;
+  top: -40px;
+  right: 30px;
+  background-color: #c03020;
+  border-radius: 5px 5px 0 0;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.train-cabin::before {
+  content: '';
+  position: absolute;
+  width: 15px;
+  height: 20px;
+  background-color: #eeeeee;
+  top: 10px;
+  left: 15px;
+  border-radius: 3px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.train-cabin::after {
+  content: '';
+  position: absolute;
+  width: 15px;
+  height: 20px;
+  background-color: #eeeeee;
+  top: 10px;
+  right: 15px;
+  border-radius: 3px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.train-nose {
+  position: absolute;
+  width: 50px;
+  height: 40px;
+  background-color: #b02010;
+  left: 0;
+  bottom: 0;
+  border-radius: 10px 0 0 0;
+}
+
+.train-nose::before {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 10px;
+  background-color: #222222;
+  bottom: 10px;
+  right: 5px;
+  border-radius: 5px;
+}
+
+.train-wheels {
+  position: absolute;
+  width: 100%;
+  height: 30px;
+  bottom: -15px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.train-wheels::before, .train-wheels::after {
+  content: '';
+  width: 30px;
+  height: 30px;
+  background-color: #222222;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 5px #444, inset 0 0 0 10px #222;
+  animation: trainWheels 2s linear infinite;
+}
+
+.train-chimney {
+  position: absolute;
+  width: 20px;
+  height: 30px;
+  background-color: #b02010;
+  top: -70px;
+  left: 50px;
+  border-radius: 4px 4px 0 0;
+}
+
+.smoke-puff {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: rgba(220, 220, 220, 0.8);
+  border-radius: 50%;
+  top: -20px;
+  left: 0;
+  animation: trainSmoke 3s ease-out infinite;
+}
+
+.delay-1 {
+  animation-delay: 1s;
+}
+
+.delay-2 {
+  animation-delay: 2s;
+}
+
+.train-car {
+  width: 120px;
+  height: 60px;
+  background-color: #3070B0;
+  margin-left: 10px;
+  border-radius: 5px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.car-1 {
+  background-color: #3070B0;
+}
+
+.car-2 {
+  background-color: #30A070;
+}
+
+.car-3 {
+  background-color: #E0B030;
+}
+
+.train-car::before, .train-car::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: #222222;
+  bottom: -10px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 4px #444, inset 0 0 0 7px #222;
+  animation: trainWheels 2s linear infinite;
+}
+
+.train-car::before {
+  left: 20px;
+}
+
+.train-car::after {
+  right: 20px;
+}
+
+/* Пыльные облака */
+.dust-cloud {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(210, 170, 90, 0.4) 0%, rgba(210, 170, 90, 0) 70%);
+  border-radius: 50%;
+  animation: dustFloat 12s ease-out infinite;
+  z-index: 5;
+}
+
+.dust-1 {
+  bottom: 15%;
+  left: 20%;
+  animation-delay: 0s;
+  animation-duration: 15s;
+}
+
+.dust-2 {
+  bottom: 30%;
+  left: 50%;
+  animation-delay: 3s;
+  animation-duration: 17s;
+}
+
+.dust-3 {
+  bottom: 25%;
+  left: 70%;
+  animation-delay: 6s;
+  animation-duration: 14s;
+}
+
+.dust-4 {
+  bottom: 35%;
+  left: 30%;
+  animation-delay: 9s;
+  animation-duration: 16s;
+}
+
+.dust-overlay {
+  opacity: 0.3;
+  mix-blend-mode: overlay;
+}
+
+.train-dust {
+  position: absolute;
+  bottom: 35%;
+  left: 10%;
+  width: 250px;
+  height: 30px;
+  background: linear-gradient(to right, rgba(210, 170, 90, 0.7), rgba(210, 170, 90, 0));
+  filter: blur(8px);
+  z-index: 15;
+}
+
+/* Миражи */
+.mirage {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.1);
+  filter: blur(3px);
+  border-radius: 50%;
+  animation: mirageEffect 8s ease-in-out infinite;
+}
+
+.mirage-1 {
+  bottom: 30%;
+  left: 60%;
+  width: 200px;
+  height: 20px;
+  animation-delay: 0s;
+}
+
+.mirage-2 {
+  bottom: 28%;
+  left: 25%;
+  width: 150px;
+  height: 15px;
+  animation-delay: 4s;
+}
+
+/* Кактусы и камни */
+.cactus-large {
+  width: 20px;
+  height: 60px;
+  background-color: #285218;
+  position: absolute;
+  bottom: 0;
+  border-radius: 3px;
+}
+
+.cactus-large::before, .cactus-large::after {
+  content: '';
+  position: absolute;
+  background-color: #285218;
+  border-radius: 3px;
+}
+
+.cactus-large::before {
+  width: 30px;
+  height: 10px;
+  top: 15px;
+  left: -20px;
+}
+
+.cactus-large::after {
+  width: 30px;
+  height: 10px;
+  top: 30px;
+  right: -20px;
+}
+
+.cactus-small {
+  width: 12px;
+  height: 40px;
+  background-color: #285218;
+  position: absolute;
+  bottom: 0;
+  border-radius: 3px;
+}
+
+.cactus-small::before {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 8px;
+  background-color: #285218;
+  top: 10px;
+  left: -15px;
+  border-radius: 3px;
+}
+
+.rock-formation {
+  width: 80px;
+  height: 30px;
+  background-color: #9a7a5a;
+  position: absolute;
+  bottom: 0;
+  border-radius: 10px 10px 5px 5px;
+}
+
+.rock-formation::before {
+  content: '';
+  position: absolute;
+  width: 40px;
+  height: 20px;
+  background-color: #8a6a4a;
+  top: -10px;
+  left: 10px;
+  border-radius: 8px;
+}
+
+.rock-formation::after {
+  content: '';
+  position: absolute;
+  width: 25px;
+  height: 15px;
+  background-color: #7a5a3a;
+  top: -15px;
+  left: 25px;
+  border-radius: 6px;
+}
